@@ -22,6 +22,28 @@ export class WorkflowModel {
   }
 }
 
+type ReusableWorkflow = {
+  name: string;
+  on: {
+    workflow_call: unknown;
+  };
+  jobs: Record<string, Job>;
+};
+export class ReusableWorkflowModel {
+  yaml: string;
+  raw: ReusableWorkflow;
+  constructor(rawYaml: string) {
+    this.yaml = rawYaml;
+    this.raw = parse(rawYaml) as ReusableWorkflow;
+  }
+
+  get jobs(): JobModel[] {
+    return Object.entries(this.raw.jobs).map(([id, job]) =>
+      new JobModel(id, job)
+    );
+  }
+}
+
 export type Job = {
   name?: string;
   "runs-on": string;
@@ -49,6 +71,27 @@ export class JobModel {
     // TODO: Remote reusable workflow
 
     return false;
+  }
+}
+
+type CompositeAction = {
+  name: string;
+  description: string | undefined;
+  runs: {
+    using: "composite";
+    steps: Step[];
+  };
+};
+export class CompositeStepModel {
+  yaml: string;
+  raw: CompositeAction;
+  constructor(rawYaml: string) {
+    this.yaml = rawYaml;
+    this.raw = parse(rawYaml) as CompositeAction;
+  }
+
+  get steps(): StepModel[] {
+    return this.raw.runs.steps.map((step) => new StepModel(step));
   }
 }
 

@@ -1,3 +1,4 @@
+import { normalize } from "https://deno.land/std@0.214.0/path/normalize.ts";
 import { decodeBase64 } from "https://deno.land/std@0.212.0/encoding/base64.ts";
 import { Octokit } from "npm:@octokit/rest@20.0.2";
 
@@ -48,5 +49,28 @@ export class Github {
     }
     // Unexpected response
     return undefined;
+  }
+
+  // Composite Actionsはaction.ymlかaciton.yamlかが確定しないので同時にfetchしてエラーにならない方を採用する
+  async fetchCompositeActionContent(
+    owner: string,
+    repo: string,
+    compositeDir: string,
+    ref: string,
+  ) {
+    const promiseYml = this.fetchContent({
+      owner,
+      repo,
+      // ./.github/actions/my-compisite/action.yml から先頭の./を削除
+      path: normalize(`${compositeDir}/action.yml`),
+      ref,
+    });
+    const promiseYaml = this.fetchContent({
+      owner,
+      repo,
+      path: normalize(`${compositeDir}/action.yaml`),
+      ref,
+    });
+    return await Promise.any([promiseYml, promiseYaml]);
   }
 }
