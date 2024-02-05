@@ -1,0 +1,10 @@
+{
+  "deno.enable": true,
+  "deno.codeLens.implementations": true,
+  "deno.codeLens.references": false,
+  "deno.codeLens.referencesAllFunctions": false,
+  "deno.codeLens.test": true,
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "deno.cacheOnSave": true,
+  "editor.formatOnSave": true
+}
