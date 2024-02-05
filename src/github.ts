@@ -32,7 +32,9 @@ export class Github {
     path: string;
     ref: string;
   }): Promise<({ raw: FileContent; content: string } | undefined)> {
-    console.debug(`getContent: ${params.owner}/${params.repo}/${params.path}`);
+    // console.debug(`getContent: ${params.owner}/${params.repo}/${params.path}`);
+
+    // TODO: 同じファイルのfetchが多発するのでキャッシュしたい
     const res = await this.octokit.repos.getContent({
       owner: params.owner,
       repo: params.repo,
