@@ -18,7 +18,7 @@
 //        - run: test
 //      - run: lint
 
-import { parseArgs } from "https://deno.land/std@0.214.0/cli/parse_args.ts";
+import { parseArgs } from "https://deno.land/std@0.215.0/cli/parse_args.ts";
 import { Github } from "./src/github.ts";
 import { WorkflowTree } from "./src/workflow_tree.ts";
 

@@ -1,5 +1,5 @@
-import { normalize } from "https://deno.land/std@0.214.0/path/normalize.ts";
-import { decodeBase64 } from "https://deno.land/std@0.214.0/encoding/base64.ts";
+import { normalize } from "https://deno.land/std@0.215.0/path/normalize.ts";
+import { decodeBase64 } from "https://deno.land/std@0.215.0/encoding/base64.ts";
 import { Octokit } from "npm:@octokit/rest@20.0.2";
 
 export type FileContent = {
