@@ -17,6 +17,7 @@ export type FileContent = {
 
 export class Github {
   octokit: Octokit;
+  contentCache: Map<string, { raw: FileContent; content: string }> = new Map();
 
   constructor(token: string | undefined) {
     const baseUrl = Deno.env.get("GITHUB_API_URL") ?? "https://api.github.com";
@@ -34,7 +35,9 @@ export class Github {
   }): Promise<({ raw: FileContent; content: string } | undefined)> {
     // console.debug(`getContent: ${params.owner}/${params.repo}/${params.path}`);
 
-    // TODO: 同じファイルのfetchが多発するのでキャッシュしたい
+    const cache = this.contentCache.get(JSON.stringify(params));
+    if (cache) return cache;
+
     const res = await this.octokit.repos.getContent({
       owner: params.owner,
       repo: params.repo,
@@ -44,10 +47,13 @@ export class Github {
     // https://github.com/octokit/types.ts/issues/440#issuecomment-1221055881
     if (!Array.isArray(res.data) && res.data.type === "file") {
       const textDecoder = new TextDecoder();
-      return {
+      const result = {
         raw: res.data,
         content: textDecoder.decode(decodeBase64(res.data.content)),
       };
+
+      this.contentCache.set(JSON.stringify(params), result);
+      return result;
     }
     // Unexpected response
     return undefined;
