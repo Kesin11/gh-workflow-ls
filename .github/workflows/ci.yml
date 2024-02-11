@@ -32,9 +32,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-deno-with-cache
-      - run: |
+      - name: Run self and output to job summary
+        run: |
+          echo '```' >> $GITHUB_STEP_SUMMARY
           deno run --allow-env --allow-net workflow-ls.ts \
             --repo ${{ github.repository }} \
             --workflow ci.yml \
             --ref ${{ github.ref }} \
-            --token ${{ secrets.GITHUB_TOKEN }}
+            --token ${{ secrets.GITHUB_TOKEN }} >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
