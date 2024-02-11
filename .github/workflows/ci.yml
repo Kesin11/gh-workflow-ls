@@ -27,3 +27,14 @@ jobs:
       - uses: ./.github/actions/setup-deno-with-cache
       - id: test
         run: deno test
+  run_self:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-deno-with-cache
+      - run: |
+          deno run --allow-env --allow-net workflow-ls.ts \
+            --repo ${{ github.repository }} \
+            --workflow ci.yml \
+            --ref ${{ github.ref }} \
+            --token ${{ secrets.GITHUB_TOKEN }}
