@@ -18,15 +18,38 @@
 //        - run: test
 //      - run: lint
 
-import { parseArgs } from "https://deno.land/std@0.216.0/cli/parse_args.ts";
+import yargs from "https://deno.land/x/yargs@v17.7.2-deno/deno.ts";
 import { Github } from "./src/github.ts";
 import { WorkflowTree } from "./src/workflow_tree.ts";
 
-const args = parseArgs(Deno.args, {
-  string: ["repo", "workflow", "ref", "token"],
-  alias: { R: "repo", w: "workflow", r: "ref", t: "token" },
-  default: { ref: "main" },
-});
+const args = yargs(Deno.args)
+  .options({
+    repo: {
+      type: "string",
+      alias: "R",
+      demandOption: true,
+      describe: "Repository. ex: OWNER/REPO",
+    },
+    workflow: {
+      type: "string",
+      alias: "w",
+      demandOption: true,
+      describe: "Workflow file. ex: ci.yml",
+    },
+    ref: {
+      type: "string",
+      alias: "r",
+      default: "main",
+      describe: "git ref like branch or tag. ex: main, v1.0.0",
+    },
+    token: {
+      type: "string",
+      alias: "t",
+      demandOption: true,
+      describe: "GitHub token. ex: $(gh auth token)",
+    },
+  })
+  .parse();
 
 if (!args.repo) throw new Error("repo argument is required");
 const [owner, repo] = args.repo.split("/");
