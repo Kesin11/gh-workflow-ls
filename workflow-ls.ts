@@ -48,6 +48,11 @@ const args = yargs(Deno.args)
       demandOption: true,
       describe: "GitHub token. ex: $(gh auth token)",
     },
+    host: {
+      type: "string",
+      demandOption: false,
+      describe: "GHES hostname. ex: github.example.com",
+    },
   })
   .parse();
 
@@ -61,8 +66,9 @@ if (!(workflow.endsWith(".yml") || workflow.endsWith(".yaml"))) {
 }
 const ref = args.ref;
 const token = args.token;
+const host = args.host;
 
-const github = new Github(token);
+const github = new Github({ token, host });
 const workflowTree = new WorkflowTree(github, owner, repo, ref, token);
 
 await workflowTree.showWorkflow(workflow);
