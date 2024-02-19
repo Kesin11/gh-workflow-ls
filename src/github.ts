@@ -24,14 +24,24 @@ export class Github {
   constructor(
     options?: { token?: string; host?: string },
   ) {
-    this.baseUrl = options?.host
-      ? `${options.host}/api/v3`
-      : Deno.env.get("GITHUB_API_URL") ?? "https://api.github.com";
+    this.baseUrl = Github.getBaseUrl(options?.host);
     this.token = options?.token ?? Deno.env.get("GITHUB_TOKEN") ?? undefined,
       this.octokit = new Octokit({
         auth: this.token,
         baseUrl: this.baseUrl,
       });
+  }
+
+  private static getBaseUrl(host?: string): string {
+    if (host) {
+      return host.startsWith("https://")
+        ? `${host}/api/v3`
+        : `https://${host}/api/v3`;
+    } else if (Deno.env.get("GITHUB_API_URL")) {
+      return Deno.env.get("GITHUB_API_URL")!;
+    } else {
+      return "https://api.github.com";
+    }
   }
 
   async fetchContent(params: {

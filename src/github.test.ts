@@ -36,8 +36,13 @@ describe(Github.name, () => {
       Deno.env.delete("GITHUB_API_URL");
     });
 
-    it("Set baseUrl by options.host", () => {
+    it("Set baseUrl by options.host with full URL", () => {
       const github = new Github({ host: "https://github.example.com" });
+      assertEquals(github.baseUrl, "https://github.example.com/api/v3");
+    });
+
+    it("Set baseUrl by options.host with hostname only", () => {
+      const github = new Github({ host: "github.example.com" });
       assertEquals(github.baseUrl, "https://github.example.com/api/v3");
     });
 
