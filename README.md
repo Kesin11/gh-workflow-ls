@@ -47,17 +47,28 @@ deno run --allow-env --allow-net --allow-read \
 
 # GHES support
 
-You can use this tool with GitHub Enterprise Server(GHES) by specifying
-`GITHUB_API_URL`. Also you should have using a token for GHES.
+You can use this tool with GitHub Enterprise Server(GHES) by specifying --host
+like `github.example.com`. Also you should have using a token for GHES.
 
-GITHUB_API_URL=YOUR_ENTERPRISE_HOST/api/v3 deno run --allow-env --allow-net\
---allow-read\
-https://raw.githubusercontent.com/Kesin11/gh-workflow-ls/main/workflow-ls.ts\
--R YOUR_OWNER/REPO\
--w YOUR_WORKFLOW.{yml,yaml}\
--r YOUR_BRANCH\
+```bash
+deno run --allow-env --allow-net --allow-read \
+https://raw.githubusercontent.com/Kesin11/gh-workflow-ls/main/workflow-ls.ts \
+-R YOUR_OWNER/REPO \
+-w YOUR_WORKFLOW.{yml,yaml} \
+-r YOUR_BRANCH \
+--host YOUR_ENTERPRISE_HOST \
 -t $(gh auth token -h YOUR_ENTERPRISE_HOST)
-
 ```
+
+Or you can use environment variable `GITHUB_API_URL` instead of --host.
+
+```bash
 export GITHUB_API_URL=https://github.example.com/api/v3
+
+deno run --allow-env --allow-net --allow-read \
+https://raw.githubusercontent.com/Kesin11/gh-workflow-ls/main/workflow-ls.ts \
+-R YOUR_OWNER/REPO \
+-w YOUR_WORKFLOW.{yml,yaml} \
+-r YOUR_BRANCH \
+-t $(gh auth token -h YOUR_ENTERPRISE_HOST)
 ```

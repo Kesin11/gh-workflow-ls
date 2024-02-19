@@ -17,14 +17,31 @@ export type FileContent = {
 
 export class Github {
   octokit: Octokit;
+  token?: string;
+  baseUrl: string;
   contentCache: Map<string, { raw: FileContent; content: string }> = new Map();
 
-  constructor(token: string | undefined) {
-    const baseUrl = Deno.env.get("GITHUB_API_URL") ?? "https://api.github.com";
-    this.octokit = new Octokit({
-      auth: token ?? Deno.env.get("GITHUB_TOKEN") ?? undefined,
-      baseUrl,
-    });
+  constructor(
+    options?: { token?: string; host?: string },
+  ) {
+    this.baseUrl = Github.getBaseUrl(options?.host);
+    this.token = options?.token ?? Deno.env.get("GITHUB_TOKEN") ?? undefined,
+      this.octokit = new Octokit({
+        auth: this.token,
+        baseUrl: this.baseUrl,
+      });
+  }
+
+  private static getBaseUrl(host?: string): string {
+    if (host) {
+      return host.startsWith("https://")
+        ? `${host}/api/v3`
+        : `https://${host}/api/v3`;
+    } else if (Deno.env.get("GITHUB_API_URL")) {
+      return Deno.env.get("GITHUB_API_URL")!;
+    } else {
+      return "https://api.github.com";
+    }
   }
 
   async fetchContent(params: {
