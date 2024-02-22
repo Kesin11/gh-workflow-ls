@@ -29,7 +29,8 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     needs: draft_release
     steps:
-      - uses: release-drafter/release-drafter@v5
+      - uses: Kesin11/actions-timeline@v2
+      - uses: release-drafter/release-drafter@v6
         id: release-drafter
         with:
           publish: true
@@ -49,4 +50,3 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: Kesin11/actions-timeline@v2
