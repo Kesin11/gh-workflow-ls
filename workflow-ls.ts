@@ -45,7 +45,6 @@ const args = yargs(Deno.args)
     token: {
       type: "string",
       alias: "t",
-      demandOption: true,
       describe: "GitHub token. ex: $(gh auth token)",
     },
     host: {
