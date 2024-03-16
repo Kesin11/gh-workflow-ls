@@ -1,6 +1,11 @@
 import { normalize } from "https://deno.land/std@0.220.1/path/normalize.ts";
 import { decodeBase64 } from "https://deno.land/std@0.220.1/encoding/base64.ts";
-import { Octokit } from "npm:@octokit/rest@20.0.2";
+import { Octokit, RestEndpointMethodTypes } from "npm:@octokit/rest@20.0.2";
+
+export type Workflow =
+  RestEndpointMethodTypes["actions"]["getWorkflowRunAttempt"]["response"][
+    "data"
+  ];
 
 export type FileContent = {
   type: "file";
@@ -22,26 +27,31 @@ export class Github {
   contentCache: Map<string, { raw: FileContent; content: string }> = new Map();
 
   constructor(
-    options?: { token?: string; host?: string },
+    options: { token?: string; origin?: string },
   ) {
-    this.baseUrl = Github.getBaseUrl(options?.host);
-    this.token = options?.token ?? Deno.env.get("GITHUB_TOKEN") ?? undefined,
-      this.octokit = new Octokit({
-        auth: this.token,
-        baseUrl: this.baseUrl,
-      });
+    this.token = options?.token ?? Deno.env.get("GITHUB_TOKEN") ?? undefined;
+    this.baseUrl = (options.origin === "https://github.com")
+      ? "https://api.github.com" // gitHub.com
+      : `${options.origin}/api/v3`; // GHES
+    this.octokit = new Octokit({
+      auth: this.token,
+      baseUrl: this.baseUrl,
+    });
   }
 
-  private static getBaseUrl(host?: string): string {
-    if (host) {
-      return host.startsWith("https://")
-        ? `${host}/api/v3`
-        : `https://${host}/api/v3`;
-    } else if (Deno.env.get("GITHUB_API_URL")) {
-      return Deno.env.get("GITHUB_API_URL")!;
-    } else {
-      return "https://api.github.com";
-    }
+  async fetchWorkflow(
+    owner: string,
+    repo: string,
+    runId: number,
+    runAttempt?: number,
+  ): Promise<Workflow> {
+    const workflow = await this.octokit.rest.actions.getWorkflowRunAttempt({
+      owner,
+      repo,
+      run_id: runId,
+      attempt_number: runAttempt ?? 1,
+    });
+    return workflow.data;
   }
 
   async fetchContent(params: {
@@ -99,3 +109,26 @@ export class Github {
     return await Promise.any([promiseYml, promiseYaml]);
   }
 }
+
+type WorkflowUrl = {
+  origin: string;
+  owner: string;
+  repo: string;
+  runId: number;
+  runAttempt?: number;
+};
+export const parseWorkflowRunUrl = (runUrl: string): WorkflowUrl => {
+  const url = new URL(runUrl);
+  const path = url.pathname.split("/");
+  const owner = path[1];
+  const repo = path[2];
+  const runId = Number(path[5]);
+  const runAttempt = path[6] === "attempts" ? Number(path[7]) : undefined;
+  return {
+    origin: url.origin,
+    owner,
+    repo,
+    runId,
+    runAttempt: runAttempt,
+  };
+};

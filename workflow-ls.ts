@@ -18,56 +18,36 @@
 //        - run: test
 //      - run: lint
 
-import yargs from "https://deno.land/x/yargs@v17.7.2-deno/deno.ts";
-import { Github } from "./src/github.ts";
+import { Command } from "https://deno.land/x/cliffy@v1.0.0-rc.3/command/mod.ts";
+import { Github, parseWorkflowRunUrl } from "./src/github.ts";
 import { WorkflowTree } from "./src/workflow_tree.ts";
 
-const args = yargs(Deno.args)
-  .options({
-    repo: {
-      type: "string",
-      alias: "R",
-      demandOption: true,
-      describe: "Repository. ex: OWNER/REPO",
-    },
-    workflow: {
-      type: "string",
-      alias: "w",
-      demandOption: true,
-      describe: "Workflow file. ex: ci.yml",
-    },
-    ref: {
-      type: "string",
-      alias: "r",
-      default: "main",
-      describe: "git ref like branch or tag. ex: main, v1.0.0",
-    },
-    token: {
-      type: "string",
-      alias: "t",
-      describe: "GitHub token. ex: $(gh auth token)",
-    },
-    host: {
-      type: "string",
-      demandOption: false,
-      describe: "GHES hostname. ex: github.example.com",
-    },
+const { options, args } = await new Command()
+  .name("workflow-ls")
+  .description(
+    "Show GitHub Actions workflow yaml expanding Reusable Workflow job and Composite Actions step",
+  )
+  .option("-t, --token <token:string>", "GitHub token. ex: $(gh auth token)", {
+    default: undefined,
   })
-  .parse();
+  .arguments("<url:string>")
+  .parse(Deno.args);
 
-if (!args.repo) throw new Error("repo argument is required");
-const [owner, repo] = args.repo.split("/");
-const workflow = args.workflow;
-if (!workflow) throw new Error("workflow argument is required");
-if (!(workflow.endsWith(".yml") || workflow.endsWith(".yaml"))) {
-  // 最終的にはymlでもworkflow_nameでもどっちでもいけるようにしたい
-  throw new Error("workflow argument must be .yml or .yaml");
-}
-const ref = args.ref;
-const token = args.token;
-const host = args.host;
+const url = args[0];
+const runUrl = parseWorkflowRunUrl(url);
 
-const github = new Github({ token, host });
-const workflowTree = new WorkflowTree(github, owner, repo, ref, token);
+const github = new Github({ token: options.token, origin: runUrl.origin });
+const workflow = await github.fetchWorkflow(
+  runUrl.owner,
+  runUrl.repo,
+  runUrl.runId,
+  runUrl.runAttempt,
+);
+const workflowTree = new WorkflowTree(
+  github,
+  runUrl.owner,
+  runUrl.repo,
+  workflow.head_sha,
+);
 
-await workflowTree.showWorkflow(workflow);
+await workflowTree.showWorkflow(workflow.path);

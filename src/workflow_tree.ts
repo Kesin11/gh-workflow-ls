@@ -14,11 +14,9 @@ export class WorkflowTree {
     public owner: string,
     public repo: string,
     public ref: string,
-    public token?: string,
   ) {
   }
-  async showWorkflow(workflow: string) {
-    const workflowPath = `.github/workflows/${workflow}`;
+  async showWorkflow(workflowPath: string) {
     const res = await this.github.fetchContent({
       owner: this.owner,
       repo: this.repo,
