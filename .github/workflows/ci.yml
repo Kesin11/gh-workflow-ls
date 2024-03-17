@@ -35,9 +35,10 @@ jobs:
       - name: Run self and output to job summary
         run: |
           echo '```' >> $GITHUB_STEP_SUMMARY
+          RUN_URL=$(gh run list -L 1 -w release --json url --jq .[].url)
           deno run --allow-env --allow-net workflow-ls.ts \
-            --repo ${{ github.repository }} \
-            --workflow ci.yml \
-            --ref ${{ github.ref }} \
-            --token ${{ secrets.GITHUB_TOKEN }} >> $GITHUB_STEP_SUMMARY
+            --token ${{ secrets.GITHUB_TOKEN }} \
+            ${RUN_URL}>> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
