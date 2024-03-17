@@ -19,77 +19,60 @@ gh extension install Kesin11/gh-workflow-ls
 
 ```bash
 gh workflow-ls \
-  -R Kesin11/actions-newfeature-playground \
-  -w reusable_caller.yml \
-  -r main \
-  -t $(gh auth token)
+  -t $(gh auth token) \
+  https://github.com/OWNER/REPO/actions/runs/RUN_ID
 ```
+
+`-t (--token)` can ommit by using `GITHUB_TOKEN` environment variable.
 
 ## Sample output
 
 ```yaml
+$ gh workflow-ls.ts https://github.com/Kesin11/actions-newfeature-playground/actions/runs/7772753912
+
 workflow: Reusable caller
-  reusable: call_reusable (https://github.com/Kesin11/actions-newfeature-playground/blob/main/.github/workflows/reusable_callable.yml)
+  reusable: call_reusable (https://github.com/Kesin11/actions-newfeature-playground/blob/f05f80f4c370179b42dd9e8d6824ddbcf9f9a5cc/.github/workflows/reusable_callable.yml)
     job: echo_foo
       - step: actions/checkout@v4
       - step: echo "inputs.foo is ${{ inputs.foo }}"
     job: notify
       - step: actions/checkout@v4
-      - composite: ./.github/actions/notify (https://github.com/Kesin11/actions-newfeature-playground/blob/main/.github/actions/notify/action.yml)
+      - composite: ./.github/actions/notify (https://github.com/Kesin11/actions-newfeature-playground/blob/f05f80f4c370179b42dd9e8d6824ddbcf9f9a5cc/.github/actions/notify/action.yml)
         - step: Notify
   job: notify
     - step: actions/checkout@v4
-    - composite: ./.github/actions/notify (https://github.com/Kesin11/actions-newfeature-playground/blob/main/.github/actions/notify/action.yml)
+    - composite: ./.github/actions/notify (https://github.com/Kesin11/actions-newfeature-playground/blob/f05f80f4c370179b42dd9e8d6824ddbcf9f9a5cc/.github/actions/notify/action.yml)
       - step: Notify
 ```
 
 ## GHES support
 
-You can use `gh-workflow-ls` with GitHub Enterprise Server(GHES) by specifying
---host like `github.example.com`. Also you should have using a token for GHES.
+You can use `gh-workflow-ls` with GitHub Enterprise Server(GHES)`. Although, you
+should have using a token for GHES.
 
 ```bash
 gh workflow-ls \
-  -R YOUR_OWNER/REPO \
-  -w YOUR_WORKFLOW.{yml,yaml} \
-  -r YOUR_BRANCH \
-  --host YOUR_ENTERPRISE_HOST \
-  -t $(gh auth token -h YOUR_ENTERPRISE_HOST)
-```
-
-Or you can use environment variable `GITHUB_API_URL` instead of --host.
-
-```bash
-export GITHUB_API_URL=https://github.example.com/api/v3
-
-gh workflow-ls \
-  -R YOUR_OWNER/REPO \
-  -w YOUR_WORKFLOW.{yml,yaml} \
-  -r YOUR_BRANCH \
-  -t $(gh auth token -h YOUR_ENTERPRISE_HOST)
+  -t $(gh auth token -h YOUR_ENTERPRISE_HOST) \
+  https://YOUR_ENTERPRISE_HOST/OWNER/REPO/actions/runs/RUN_ID
 ```
 
 ## Run using Deno
 
-So `gh-workflow-ls` is written by Deno, you can run using your Deno.
+`gh-workflow-ls` is written by Deno, so you can run using your Deno.
 
 ```bash
-deno run --allow-env --allow-net --allow-read workflow-ls.ts \
-  -R Kesin11/actions-newfeature-playground \
-  -w reusable_caller.yml \
-  -r main \
-  -t $(gh auth token)
+deno run --allow-env --allow-net workflow-ls.ts \
+  -t $(gh auth token) \
+  https://github.com/OWNER/REPO/actions/runs/RUN_ID
 ```
 
 Also you can run it from URL directly.
 
 ```bash
-deno run --allow-env --allow-net --allow-read \
+deno run --allow-env --allow-net \
   https://raw.githubusercontent.com/Kesin11/gh-workflow-ls/main/workflow-ls.ts \
-  --repo Kesin11/actions-newfeature-playground \
-  --workflow reusable_caller.yml \
-  --ref main \
-  --token $(gh auth token)
+  -t $(gh auth token) \
+  https://github.com/OWNER/REPO/actions/runs/RUN_ID
 ```
 
 # LICENSE
