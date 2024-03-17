@@ -29,7 +29,7 @@ export class Github {
   constructor(
     options: { token?: string; origin?: string },
   ) {
-    this.token = options?.token ?? Deno.env.get("GITHUB_TOKEN") ?? undefined;
+    this.token = options.token ?? Deno.env.get("GITHUB_TOKEN") ?? undefined;
     this.baseUrl = (options.origin === "https://github.com")
       ? "https://api.github.com" // gitHub.com
       : `${options.origin}/api/v3`; // GHES
