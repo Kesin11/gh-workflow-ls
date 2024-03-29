@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.220.1/assert/mod.ts";
+import { assertEquals } from "https://deno.land/std@0.221.0/assert/mod.ts";
 import { JobModel, StepModel } from "./workflow_file.ts";
 
 Deno.test(JobModel.name, async (t) => {

@@ -1,5 +1,5 @@
-import { normalize } from "https://deno.land/std@0.220.1/path/normalize.ts";
-import { decodeBase64 } from "https://deno.land/std@0.220.1/encoding/base64.ts";
+import { normalize } from "https://deno.land/std@0.221.0/path/normalize.ts";
+import { decodeBase64 } from "https://deno.land/std@0.221.0/encoding/base64.ts";
 import { Octokit, RestEndpointMethodTypes } from "npm:@octokit/rest@20.0.2";
 
 export type Workflow =
