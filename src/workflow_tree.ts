@@ -1,4 +1,4 @@
-import { normalize } from "https://deno.land/std@0.221.0/path/normalize.ts";
+import { normalize } from "https://deno.land/std@0.222.1/path/normalize.ts";
 import { Github } from "./github.ts";
 import {
   CompositeStepModel,
