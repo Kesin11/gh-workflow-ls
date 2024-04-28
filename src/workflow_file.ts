@@ -1,4 +1,4 @@
-import { parse } from "https://deno.land/std@0.223.0/yaml/parse.ts";
+import { parse } from "https://deno.land/std@0.224.0/yaml/parse.ts";
 
 type Workflow = {
   name: string;
