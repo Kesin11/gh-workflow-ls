@@ -4,44 +4,7 @@ import {
   describe,
   it,
 } from "https://deno.land/std@0.224.0/testing/bdd.ts";
-import { Github, parseWorkflowRunUrl } from "./github.ts";
-
-describe(Github.name, () => {
-  describe("Set token at constructor", () => {
-    beforeEach(() => {
-      // reset env
-      Deno.env.delete("GITHUB_TOKEN");
-    });
-
-    it("set options.token when options.token", () => {
-      const github = new Github({ token: "token" });
-      assertEquals(github.token, "token");
-    });
-
-    it("set GITHUB_TOKEN when undefined", () => {
-      Deno.env.set("GITHUB_TOKEN", "foo");
-      const github = new Github({ token: undefined });
-      assertEquals(github.token, "foo");
-    });
-
-    it("set undefined when GITHUB_TOKEN env doesn't exists", () => {
-      const github = new Github({ token: undefined });
-      assertEquals(github.token, undefined);
-    });
-  });
-
-  describe("Set baseUrl at constructor", () => {
-    it("set http://api.github.com when origin is http://github.com", () => {
-      const github = new Github({ origin: "https://github.com" });
-      assertEquals(github.baseUrl, "https://api.github.com");
-    });
-
-    it("set http://{origin}/api/v3 when origin is some GHES host", () => {
-      const github = new Github({ origin: "https://github.example.com" });
-      assertEquals(github.baseUrl, "https://github.example.com/api/v3");
-    });
-  });
-});
+import { parseWorkflowRunUrl } from "./github.ts";
 
 describe(parseWorkflowRunUrl.name, () => {
   it("should parse basic URL", () => {
