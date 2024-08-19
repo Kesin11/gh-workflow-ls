@@ -1,12 +1,12 @@
 import { normalize } from "https://deno.land/std@0.224.0/path/normalize.ts";
-import type { Github } from "../../../mod.ts";
+import type { Github } from "@kesin11/gha-utils/api_client";
 import {
   CompositeStepModel,
   type JobModel,
   ReusableWorkflowModel,
   type StepModel,
   WorkflowModel,
-} from "../../../mod.ts";
+} from "@kesin11/gha-utils/workflow_file";
 import { fetchCompositeActionContent } from "./github.ts";
 
 export class WorkflowTree {

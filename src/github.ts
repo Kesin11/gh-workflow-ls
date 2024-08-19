@@ -1,5 +1,5 @@
 import { normalize } from "https://deno.land/std@0.224.0/path/normalize.ts";
-import type { Github, WorkflowRun } from "../../../mod.ts";
+import type { Github, WorkflowRun } from "@kesin11/gha-utils/api_client";
 
 type WorkflowUrl = {
   origin: string;

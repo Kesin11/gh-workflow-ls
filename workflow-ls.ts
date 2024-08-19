@@ -19,8 +19,8 @@
 //      - run: lint
 
 import { Command } from "https://deno.land/x/cliffy@v1.0.0-rc.3/command/mod.ts";
-import { Github } from "../../mod.ts";
-import { fetchWorkflow, parseWorkflowRunUrl } from "./src/github.ts";
+import { Github, parseWorkflowRunUrl } from "@kesin11/gha-utils/api_client";
+import { fetchWorkflow } from "./src/github.ts";
 import { WorkflowTree } from "./src/workflow_tree.ts";
 
 const { options, args } = await new Command()
