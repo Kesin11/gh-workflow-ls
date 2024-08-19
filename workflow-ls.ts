@@ -19,7 +19,8 @@
 //      - run: lint
 
 import { Command } from "https://deno.land/x/cliffy@v1.0.0-rc.3/command/mod.ts";
-import { Github, parseWorkflowRunUrl } from "./src/github.ts";
+import { Github, parseWorkflowRunUrl } from "@kesin11/gha-utils/api_client";
+import { fetchWorkflow } from "./src/github.ts";
 import { WorkflowTree } from "./src/workflow_tree.ts";
 
 const { options, args } = await new Command()
@@ -36,8 +37,12 @@ const { options, args } = await new Command()
 const url = args[0];
 const runUrl = parseWorkflowRunUrl(url);
 
-const github = new Github({ token: options.token, origin: runUrl.origin });
-const workflow = await github.fetchWorkflow(
+const host = (runUrl.origin !== "https://github.com")
+  ? runUrl.origin
+  : undefined;
+const github = new Github({ token: options.token, host, debug: false });
+const workflow = await fetchWorkflow(
+  github,
   runUrl.owner,
   runUrl.repo,
   runUrl.runId,

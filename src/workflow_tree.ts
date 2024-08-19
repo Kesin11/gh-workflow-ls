@@ -1,12 +1,13 @@
 import { normalize } from "https://deno.land/std@0.224.0/path/normalize.ts";
-import { Github } from "./github.ts";
+import type { Github } from "@kesin11/gha-utils/api_client";
 import {
   CompositeStepModel,
-  JobModel,
+  type JobModel,
   ReusableWorkflowModel,
-  StepModel,
+  type StepModel,
   WorkflowModel,
-} from "./workflow_file.ts";
+} from "@kesin11/gha-utils/workflow_file";
+import { fetchCompositeActionContent } from "./github.ts";
 
 export class WorkflowTree {
   constructor(
@@ -17,14 +18,14 @@ export class WorkflowTree {
   ) {
   }
   async showWorkflow(workflowPath: string) {
-    const res = await this.github.fetchContent({
+    const fileContent = await this.github.fetchContent({
       owner: this.owner,
       repo: this.repo,
       path: workflowPath,
       ref: this.ref,
     });
 
-    const workflowModel = new WorkflowModel(res!.content);
+    const workflowModel = new WorkflowModel(fileContent!);
     console.log(`workflow: ${workflowModel.raw.name}`);
     await this.showJobs(workflowModel.jobs, 1);
   }
@@ -35,15 +36,17 @@ export class WorkflowTree {
       const space = "  ".repeat(indent);
       if (job.isReusable()) {
         const localReusableWorkflowPath = normalize(job.raw.uses!);
-        const res = await this.github.fetchContent({
+        const fileContent = await this.github.fetchContent({
           owner: this.owner,
           repo: this.repo,
           path: localReusableWorkflowPath,
           ref: this.ref,
         });
-        console.log(`${space}reusable: ${job.id} (${res!.raw.html_url})`);
+        console.log(
+          `${space}reusable: ${job.id} (${fileContent!.raw.html_url})`,
+        );
 
-        const reusableWorkflowModel = new ReusableWorkflowModel(res!.content);
+        const reusableWorkflowModel = new ReusableWorkflowModel(fileContent!);
         await this.showJobs(reusableWorkflowModel.jobs, indent + 1);
       } else {
         // NOTE: 現在は他リポジトリのReusable Workflowには対応していない
@@ -60,17 +63,23 @@ export class WorkflowTree {
     const space = "  ".repeat(indent);
     for (const step of steps) {
       if (step.isComposite()) {
-        const res = await this.github.fetchCompositeActionContent(
+        const fileContent = await fetchCompositeActionContent(
+          this.github,
           this.owner,
           this.repo,
           step.raw.uses!,
           this.ref,
         );
         console.log(
-          `${space}- composite: ${step.showable} (${res!.raw.html_url})`,
+          `${space}- composite: ${step.showable} (${
+            fileContent!.raw.html_url
+          })`,
         );
 
-        const compositeActionModel = new CompositeStepModel(res!.content);
+        const compositeActionModel = new CompositeStepModel(
+          fileContent!,
+          step.ast, // It's fake ast
+        );
         await this.showSteps(compositeActionModel.steps, indent + 1);
       } else {
         // NOTE: 現在は他リポジトリのComposite Actionには対応していない
