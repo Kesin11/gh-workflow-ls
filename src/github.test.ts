@@ -1,9 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
-import {
-  beforeEach,
-  describe,
-  it,
-} from "https://deno.land/std@0.224.0/testing/bdd.ts";
+import { describe, it } from "https://deno.land/std@0.224.0/testing/bdd.ts";
 import { parseWorkflowRunUrl } from "./github.ts";
 
 describe(parseWorkflowRunUrl.name, () => {
