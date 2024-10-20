@@ -49,4 +49,3 @@ jobs:
           gh release upload ${{ needs.draft_release.outputs.tag_name }} ./dist/gh-workflow-ls-* --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
