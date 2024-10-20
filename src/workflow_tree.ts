@@ -1,4 +1,4 @@
-import { normalize } from "https://deno.land/std@0.224.0/path/normalize.ts";
+import { normalize } from "@std/path";
 import type { Github } from "@kesin11/gha-utils/api_client";
 import {
   CompositeStepModel,

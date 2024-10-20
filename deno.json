@@ -6,6 +6,11 @@
     "compile:darwin-arm64": "deno compile --allow-env --allow-net --target aarch64-apple-darwin -o ./dist/gh-workflow-ls-darwin-arm64 workflow-ls.ts"
   },
   "imports": {
-    "@kesin11/gha-utils": "jsr:@kesin11/gha-utils@^0.1.0"
+    "@cliffy/command": "jsr:@cliffy/command@^1.0.0-rc.7",
+    "@kesin11/gha-utils": "jsr:@kesin11/gha-utils@^0.1.0",
+    "@std/assert": "jsr:@std/assert@^1.0.6",
+    "@std/path": "jsr:@std/path@^1.0.6",
+    "@std/testing": "jsr:@std/testing@^1.0.3",
+    "@std/yaml": "jsr:@std/yaml@^1.0.5"
   }
 }
