@@ -19,7 +19,7 @@
     "jsr:@std/semver@^1.0.8": "1.0.8",
     "jsr:@std/testing@^1.0.18": "1.0.18",
     "jsr:@std/text@^1.0.17": "1.0.18",
-    "jsr:@std/yaml@^1.0.5": "1.0.5",
+    "jsr:@std/yaml@^1.1.0": "1.1.0",
     "jsr:@std/yaml@~0.224.3": "0.224.3",
     "npm:@octokit/plugin-retry@^7.1.1": "7.1.2_@octokit+core@6.1.2",
     "npm:@octokit/plugin-throttling@^9.3.0": "9.3.2_@octokit+core@6.1.2",
@@ -124,8 +124,8 @@
     "@std/yaml@0.224.3": {
       "integrity": "9da1ed0094f42ba24570b4d88a094b44a793ac7f2bc085c1939d3ac7e11cc0bb"
     },
-    "@std/yaml@1.0.5": {
-      "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
+    "@std/yaml@1.1.0": {
+      "integrity": "fc1c5c63e05c4c5eb6118355f557958035d41940d6c29d35b306ef7155d6edb0"
     }
   },
   "npm": {
@@ -258,7 +258,7 @@
       "jsr:@std/assert@^1.0.19",
       "jsr:@std/path@^1.1.4",
       "jsr:@std/testing@^1.0.18",
-      "jsr:@std/yaml@^1.0.5"
+      "jsr:@std/yaml@^1.1.0"
     ]
   }
 }
