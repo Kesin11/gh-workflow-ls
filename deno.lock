@@ -15,7 +15,6 @@
     "jsr:@std/fs@^1.0.23": "1.0.23",
     "jsr:@std/internal@^1.0.12": "1.0.13",
     "jsr:@std/internal@^1.0.13": "1.0.13",
-    "jsr:@std/path@^1.0.6": "1.1.4",
     "jsr:@std/path@^1.1.4": "1.1.4",
     "jsr:@std/semver@^1.0.8": "1.0.8",
     "jsr:@std/testing@^1.0.3": "1.0.18",
@@ -93,7 +92,7 @@
     "@std/fs@1.0.23": {
       "integrity": "3ecbae4ce4fee03b180fa710caff36bb5adb66631c46a6460aaad49515565a37",
       "dependencies": [
-        "jsr:@std/path@^1.1.4"
+        "jsr:@std/path"
       ]
     },
     "@std/internal@1.0.13": {
@@ -116,7 +115,7 @@
         "jsr:@std/data-structures",
         "jsr:@std/fs",
         "jsr:@std/internal@^1.0.13",
-        "jsr:@std/path@^1.1.4"
+        "jsr:@std/path"
       ]
     },
     "@std/text@1.0.18": {
@@ -257,7 +256,7 @@
       "jsr:@cliffy/command@^1.0.1",
       "jsr:@kesin11/gha-utils@0.1",
       "jsr:@std/assert@^1.0.19",
-      "jsr:@std/path@^1.0.6",
+      "jsr:@std/path@^1.1.4",
       "jsr:@std/testing@^1.0.3",
       "jsr:@std/yaml@^1.0.5"
     ]
