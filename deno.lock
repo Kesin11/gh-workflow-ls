@@ -17,7 +17,7 @@
     "jsr:@std/internal@^1.0.14": "1.0.14",
     "jsr:@std/path@^1.1.5": "1.1.5",
     "jsr:@std/semver@^1.0.8": "1.0.8",
-    "jsr:@std/testing@^1.0.18": "1.0.19",
+    "jsr:@std/testing@^1.0.19": "1.0.19",
     "jsr:@std/text@^1.0.17": "1.0.18",
     "jsr:@std/yaml@^1.1.0": "1.1.0",
     "jsr:@std/yaml@~0.224.3": "0.224.3",
@@ -257,7 +257,7 @@
       "jsr:@kesin11/gha-utils@0.1",
       "jsr:@std/assert@^1.0.19",
       "jsr:@std/path@^1.1.5",
-      "jsr:@std/testing@^1.0.18",
+      "jsr:@std/testing@^1.0.19",
       "jsr:@std/yaml@^1.1.0"
     ]
   }
