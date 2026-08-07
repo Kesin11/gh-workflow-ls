@@ -7,9 +7,9 @@
     "jsr:@cliffy/table@1.2.1": "1.2.1",
     "jsr:@kesin11/gha-utils@0.1": "0.1.0",
     "jsr:@std/assert@^1.0.19": "1.0.19",
-    "jsr:@std/async@^1.4.0": "1.5.0",
+    "jsr:@std/async@^1.5.0": "1.5.0",
     "jsr:@std/collections@^1.0.2": "1.0.8",
-    "jsr:@std/data-structures@^1.1.0": "1.1.1",
+    "jsr:@std/data-structures@^1.1.2": "1.1.2",
     "jsr:@std/encoding@1": "1.0.5",
     "jsr:@std/fmt@^1.0.10": "1.0.10",
     "jsr:@std/fs@^1.0.24": "1.0.24",
@@ -18,7 +18,7 @@
     "jsr:@std/path@^1.1.5": "1.1.6",
     "jsr:@std/path@^1.1.6": "1.1.6",
     "jsr:@std/semver@^1.0.8": "1.0.8",
-    "jsr:@std/testing@^1.0.19": "1.0.19",
+    "jsr:@std/testing@^1.0.20": "1.0.20",
     "jsr:@std/text@^1.0.19": "1.0.19",
     "jsr:@std/yaml@^1.1.2": "1.1.2",
     "jsr:@std/yaml@~0.224.3": "0.224.3",
@@ -81,8 +81,8 @@
     "@std/collections@1.0.8": {
       "integrity": "de76692f9121838711b1d2fb5042619c074db26905a87b58cff56cfe1bd6d6d0"
     },
-    "@std/data-structures@1.1.1": {
-      "integrity": "7e1fcf19771fb9c6dbcd7f65039d6d42ef8dc023cfbc0c4cdc74b24e09229380"
+    "@std/data-structures@1.1.2": {
+      "integrity": "2471377c9e0051f9ec34e57d0ebd0ad133a5a889677446ec6ba9938e4e102918"
     },
     "@std/encoding@1.0.5": {
       "integrity": "ecf363d4fc25bd85bd915ff6733a7e79b67e0e7806334af15f4645c569fefc04"
@@ -108,15 +108,15 @@
     "@std/semver@1.0.8": {
       "integrity": "dc830e8b8b6a380c895d53fbfd1258dc253704ca57bbe1629ac65fd7830179b7"
     },
-    "@std/testing@1.0.19": {
-      "integrity": "f4236172365b216728dc3cc8b5e80a9f4c33083d1e4ede7613d5b25b4014898e",
+    "@std/testing@1.0.20": {
+      "integrity": "21380ed438672762e4ec549cbf4fe41c5b68f5598773a30b64abe7375513e721",
       "dependencies": [
         "jsr:@std/assert",
         "jsr:@std/async",
         "jsr:@std/data-structures",
         "jsr:@std/fs",
         "jsr:@std/internal@^1.0.14",
-        "jsr:@std/path@^1.1.5"
+        "jsr:@std/path@^1.1.6"
       ]
     },
     "@std/text@1.0.19": {
@@ -258,7 +258,7 @@
       "jsr:@kesin11/gha-utils@0.1",
       "jsr:@std/assert@^1.0.19",
       "jsr:@std/path@^1.1.6",
-      "jsr:@std/testing@^1.0.19",
+      "jsr:@std/testing@^1.0.20",
       "jsr:@std/yaml@^1.1.2"
     ]
   }
